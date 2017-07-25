@@ -1,16 +1,18 @@
-
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
 
 <head>
   <meta charset="utf-8">
-  <title>Accenture</title>
+  <title>Claims KB</title>
   <meta name="description" content="particles.js is a lightweight JavaScript library for creating particles.">
   <meta name="author" content="Vincent Garreau" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="stylesheet" href="{% static 'personal/css/bootstrap.min.css' %}" type = "text/css"/>
     <link rel="stylesheet" media="screen" href="{% static 'personal/css/style.css' %}" >
+
+  <link rel="shortcut icon" href="{% static 'personal/img/favicon.ico' %}" type="image/x-icon"/>
+
 </head>
 <body>
 
@@ -23,17 +25,18 @@
                 <div class="navbar-header col-sm-6 col-md-6">
                     <div class="logo-well">
                         <img src="http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons/blue-chrome-rain-icons-alphanumeric/069422-blue-chrome-rain-icon-alphanumeric-more-than.png" alt="Neo4j World's Leading Graph Database" height="160" width="180" id="logo">
-                        <div class="brand" style="color: white;font-size: 140%;">Accenture Knowledge Base</div>
+                        <div class="brand" style="color: white;font-size: 140%;">Knowledge Base Agent</div>
                     </div>
                 </div>
-                <div class="col-sm-6 col-md-6">
+                <div class="col-sm-8 col-md-4">
                     <ul class="nav navbar-nav">
                         <li>
-                            <form role="search" class="navbar-form" id="search">
+                            <form role="search" class="navbar-form" id="search" action="search/" method="POST">
+                                {% csrf_token %}
                                 <div class="form-group">
-                                    <input type="text" value="5446622" placeholder="Search for Claim Number" class="form-control" name="search">
+                                    <input type="text" value="" placeholder="Person { name: 'Bob' }" class="form-control" style="width: 230px;" name="claim_field">
                                 </div>
-                                <button class="btn btn-default" type="submit">Search Claim</button>
+                                <button class="btn btn-default" type="submit">Search</button>
                             </form>
                         </li>
                     </ul>
@@ -42,6 +45,7 @@
                     <div class="container">
         <div class="col-sm-6 col-md-6">
             <table class="table" style="color: white">
+                <!--
               <thead>
                 <tr>
                   <th>#</th>
@@ -56,22 +60,24 @@
                   <td>Otto</td>
                 </tr>
                 <tr>
-                  <th scope="row">2</th>
-                  <td>Jacob</td>
-                  <td>Thornton</td>
-                </tr>
-                <tr>
                   <th scope="row">3</th>
                   <td>Larry</td>
                   <td>the Bird</td>
                 </tr>
+                -->
+                {% block content %}
+                {% for post in books %}
+                <tr>
+                  <th scope="row">{{ post.id }}</th>
+                  <td>{{ post }}</td>
+                </tr>
+                {% endfor %}
+                {% endblock %}
+
               </tbody>
             </table>
-            {% block content %}
-                {% for post in books %}
-                    <h5>{{ post }}</h5>
-                {% endfor %}
-            {% endblock %}
+
+
         </div>
     </div>
             </div>
