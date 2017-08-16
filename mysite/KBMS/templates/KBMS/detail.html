@@ -1,0 +1,23 @@
+{% extends 'KBMS/base.html' %}
+{% block body %}
+
+<!--	<img src=""> -->
+<div class="container-fluid" style="margin-top:100px">
+	<h4>Here is the Node you asked for:</h4>
+
+	<h1>{{ nodes.ini_node }} </h1>
+	<h2>{{ nodes.att1 }} </h2>
+    <h3>{{ nodes.att2 }}</h3>
+
+
+	{% if error_message %}
+	 	<p>{{error_message}}</p>
+	 {% endif%}	
+
+	{% for rel in node.rel_set.all %}
+		{{rel.rel_title}}<br>
+	{% endfor %}
+
+</div>
+
+{% endblock %}

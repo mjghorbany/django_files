@@ -76,7 +76,7 @@ textarea:focus
 	border-radius: 0;
 	text-transform: capitalize;
 	z-index: 99999;
-	display: none;
+	display:block;
 }
 
 .navbar .navbar-brand,

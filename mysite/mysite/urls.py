@@ -21,5 +21,5 @@ urlpatterns = [
     url(r'^kbapp/',include('kbapp.urls')),
     url(r'^blog/',include('blog.urls')),
     url(r'^personal/',include('personal.urls')),
-    url(r'^KBMS/',include('KBMS.urls')),
+    url(r'^KBMS/', include('KBMS.urls', namespace="KBMS")),
 ]
