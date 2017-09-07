@@ -16,10 +16,22 @@ Including another URLconf
 from django.conf.urls import url,include
 from django.contrib import admin
 
+from django.conf.urls import url
+from django.contrib import admin
+from rest_framework.urlpatterns import format_suffix_patterns
+from KBMS import views
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^kbapp/',include('kbapp.urls')),
     url(r'^blog/',include('blog.urls')),
     url(r'^personal/',include('personal.urls')),
     url(r'^KBMS/', include('KBMS.urls', namespace="KBMS")),
+
+    url(r'^nodes/', views.NodeList.as_view()),
+    url(r'^nodes/(?P<pk>[0-9]+)/', views.NodeDetail.as_view()),
+
+    url(r'^music/', include('music.urls')),
+    #url(r'^', include('music.urls')),
 ]
+urlpatterns = format_suffix_patterns(urlpatterns)

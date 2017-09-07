@@ -1,41 +1,131 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse,Http404
 from django.template import loader
-from .models import Node
+from .models import Node,Rel
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from django.views import generic
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 
+from .serializers import NodeSerializer
+from django.http import Http404
+
+from django.views import generic
 from django.shortcuts import render
+
+from neo4jrestclient.client import GraphDatabase
+from neo4jrestclient.query import Q
+from neo4jrestclient import client
+
+from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout
+from django.http import JsonResponse
+from django.shortcuts import render, get_object_or_404
+from django.db.models import Q
+from .forms import OntologyForm
+from .models import Ontology
+
+AUDIO_FILE_TYPES = ['wav', 'mp3', 'ogg']
+IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg']
+
+
+def create_ontology(request):
+    if not request.user.is_authenticated():
+        return render(request, 'music/login.html')
+    else:
+        form = OntologyForm(request.POST or None, request.FILES or None)
+        if form.is_valid():
+            ontology = form.save(commit=False)
+            ontology.user = request.user
+            ontology.ontology_logo = request.FILES['ontology_logo']
+            file_type = ontology.ontology_logo.url.split('.')[-1]
+            file_type = file_type.lower()
+            if file_type not in IMAGE_FILE_TYPES:
+                context = {
+                    'album': ontology,
+                    'form': form,
+                    'error_message': 'Image file must be PNG, JPG, or JPEG',
+                }
+                return render(request, 'KBMS/create_ontology.html', context)
+            ontology.save()
+            return render(request, 'KBMS/detail.html', {'album': ontology})
+        context = {
+            "form": form,
+        }
+        return render(request, 'KBMS/create_ontology.html', context)
+
 
 # Create your views here.
 def index(request):
-    template='KBMS/home2.html'
+    template='KBMS/index.html'
+    node_count = Node.objects.count()
+    rel_count = Rel.objects.count()
     context={
-        'nodes_n': '20',
-        'rels_n': '17',
+        'nodes_n': node_count,
+        'rels_n': rel_count,
         'rules_n': '0',
         'ontology_n': '1',
     }
     return render(request,template,context)
 
 def ontology(request):
-    return render(request,'KBMS/ontology.html')
+    # if not request.user.is_authenticated():
+    #     return render(request, 'music/login.html')
+    # else:
+    #     ontologies = Ontology.objects.filter(user=request.user)
+    #     query = request.GET.get("q")
+    #     if query:
+    #         ontologies = ontologies.filter(
+    #             Q(album_title__icontains=query) |
+    #             Q(artist__icontains=query)
+    #         ).distinct()
+    #         return render(request, 'KBMS/ontology.html', {
+    #             'ontologies': ontologies,
+    #         })
+    #     else:
+    return render(request, 'KBMS/ontology.html')
 
 
-def detail(request, node_id):
+
+
+def rule_engine(request):
+    res=do_graph_query(request)
+    context={
+        'res1' : res[0][0],
+        'res2' : res[1][0],
+    }
+    return render(request,'KBMS/rule.html',context)
+
+
+def detail(request, ontology_id):
+    if not request.user.is_authenticated():
+        return render(request, 'KBMS/login.html')
+    else:
+        user = request.user
+        album = get_object_or_404(Ontology, pk=ontology_id)
+        return render(request, 'KBMS/detail.html', {'ontology': ontology, 'user': user})
+
+
+
+def favorite(request, node_id):
+    node=get_object_or_404(Node,pk=node_id)
+    template = 'KBMS/detail.html'
+
     try:
-        node=Node.objects.get(pk=node_id)
-    except Node.DoesNotExist:
+        selected_node=Node.objects.get(pk=request.POST['node'])
+    except (KeyError, Node.DoesNotExist):
         raise Http404('The Node you asked for doesn not exist!')
 
-    template='KBMS/detail.html'
-    context={
-        'nodes':node,
-        'id':id,
-        'rels': '20',
-    }
-    return render(request,template,context)
+        return render(request,template,{
+            'node':node,
+            'error_message':'No Valid Node',
+        })
+    else:
+        selected_node.is_favorite=True
+        selected_node.save()
+        return render(request, template, {'node':node})
+
 
 class IndexView(generic.ListView):
     template_name = "KBMS/index.html"
@@ -51,4 +141,64 @@ class DetailView(generic.DetailView):
 
 class NodeCreate(CreateView):
     model = Node
-    fields = ['ini_node','att1','att2','att3']
+    fields = ['name','att1','att2','att3']
+
+
+
+
+# Lists all stocks or creates a new one
+# stocks/
+class NodeList(APIView):
+
+    def get(self, request):
+        stocks = Node.objects.all()
+        serializer = NodeSerializer(stocks, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = NodeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class NodeDetail(APIView):
+    def get_object(self, pk):
+        try:
+            return Node.objects.get(pk=pk)
+        except Node.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        snippet = self.get_object(pk)
+        serializer = NodeSerializer(snippet)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        snippet = self.get_object(pk)
+        serializer = NodeSerializer(snippet, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        snippet = self.get_object(pk)
+        snippet.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+def do_graph_query(request):
+    """Make query to Neo4j, return names of associated nodes."""
+
+
+    url = "http://localhost:7474/db/data"
+    gdb = GraphDatabase(url, username="neo4j", password="mjgh2765")
+
+    q = "MATCH (n:Drink) RETURN n LIMIT 25"
+    results = gdb.query(q=q, data_contents=True)
+
+    result=results.rows
+
+    return result
+    # result.rows[0][0]['calories']

@@ -32,7 +32,7 @@ $(function (){
 
     // typejs
     $('.caption h4 span').typed({
-        strings: ["am a knowledge graph","learn over time","answer questions"],
+        strings: ["am a knowledge graph","learn over time","answer your queries", ,"am ontology driven"],
         loop: true,
         startDelay: 1000,
         backDelay: 2000

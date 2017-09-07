@@ -1,22 +1,30 @@
 {% extends 'KBMS/base.html' %}
+
+
 {% block body %}
+<div class="container-fluid songs-container">
 
-<!--	<img src=""> -->
-<div class="container-fluid" style="margin-top:100px">
-	<h4>Here is the Node you asked for:</h4>
+    <div class="row">
 
-	<h1>{{ nodes.ini_node }} </h1>
-	<h2>{{ nodes.att1 }} </h2>
-    <h3>{{ nodes.att2 }}</h3>
+        <!-- Left Album Info -->
+        <div class="col-sm-4 col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a href="{% url 'KBMS:detail' ontology.id %}">
+                        {% if ontology.ontology_logo %}
+                            <img src="{{ ontology.ontology_logo.url }}" class="img-responsive">
+                        {% else %}
+                            <h3>No image to display</h3>
+                        {% endif %}
+                    </a>
+                    <h1>{{ ontology.ontology_title }} <small>{{ ontology.genre }}</small></h1>
+                    <h2>{{ ontology.artist }}</h2>
+                </div>
+            </div>
+        </div>
 
 
-	{% if error_message %}
-	 	<p>{{error_message}}</p>
-	 {% endif%}	
-
-	{% for rel in node.rel_set.all %}
-		{{rel.rel_title}}<br>
-	{% endfor %}
+    </div>
 
 </div>
 

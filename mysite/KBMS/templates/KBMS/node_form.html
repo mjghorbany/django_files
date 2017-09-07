@@ -2,30 +2,69 @@
 
 
 {% block body %}
+<!-- Main Container -->
 <div class="container-fluid" style="margin-top:100px">
-	
-	<div class="row">
 
+	<div class="row" style="">
 		<div class="col-sm-12 col-md-5">
+
+			<!--   Add a Node Div -->
 			<div class="panel panel-default">
 				<div class="panel-body">
 					<h3>Add a Node</h3>
-					<form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+					<form class="form-vertical" action="" method="post" enctype="multipart/form-data">
 						{% csrf_token %}
 						{% include 'KBMS/node_template.html' %}
 						<div class="form-group"></div>
 							<div class="col-sm-offset-2 col-sm-10">
-							<button type="submit" class="btn btn-success">Submit</button>
+								<button type="submit" class="btn btn-success">Submit</button>
 							</div>
 					</form>
+				</div>
+			</div>
 
+			<!--   Search Bar -->
+			<div class="panel panel-default" style="">
+				<div class="panel-body">
+					<h3>Search The Graph</h3>
+					<div class="col-sm-8 col-md-4">
+						<ul class="">
+							<li>
+								<form role="search" class="navbar-form" id="search" action="search/" method="POST">
+									{% csrf_token %}
+									<div class="form-group">
+										<input type="text" value="" placeholder="Person { name: 'Bob' }" class="form-control" style="width: 230px;" name="claim_field">
+									</div>
+									<div class="inline">
+										<br>
+										<button class="btn btn-success" type="submit">Search</button>
+									</div>
+								</form>
+							</li>
+						</ul>
+					</div>
+					<div class="container">
+						<div class="col-sm-6 col-md-6">
+							<table class="table" style="color: white">
+								{% block content %}
+								{% for post in books %}
+								<tr>
+								  <th scope="row">{{ post.id }}</th>
+								  <td>{{ post }}</td>
+								</tr>
+								{% endfor %}
+								{% endblock %}
+								</tbody>
+							</table>
+						</div>
+					</div>
 				</div>
 			</div>
 
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<h3>Existing Entities</h3>
-					<form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+					<h3>Add a Relationship</h3>
+					<form class="form-vertical" action="" method="post" enctype="multipart/form-data">
 						{% csrf_token %}
 						{% include 'KBMS/node_template.html' %}
 						<div class="form-group"></div>

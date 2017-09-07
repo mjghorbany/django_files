@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'kbapp',
     'KBMS',
     'personal',
+    'rest_framework',
     'blog',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'music.apps.MusicConfig',
 ]
 
 MIDDLEWARE = [
