@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+{% load static %}
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en"> <!--<![endif]-->
+	<head>
+		{% load staticfiles %}
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+		<!-- Mobile Specific Meta -->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Always force latest IE rendering engine -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+		<meta name="description" content="Django is a responsive creative template">
+		<meta name="keywords" content="portfolio, personal, corporate, business, parallax, creative, agency">
+
+		<!-- Title -->
+		<title>KBMS</title>
+
+		<!-- Google fonts -->
+		<link href="https://fonts.googleapis.com/css?family=Raleway:100,400,600,700,900" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Norican" rel="stylesheet">
+
+		<!-- Font awesome Core CSS -->
+		<link rel="stylesheet" href="{% static 'KBMS/css/font-awesome.min.css' %}">
+		<link rel="stylesheet" href="{% static 'KBMS/css/et-line.css' %}">
+
+		<!-- bootstrap css -->
+		<link rel="stylesheet" href="{% static 'KBMS/css/bootstrap.min.css' %}">
+
+		<!-- magnific-popup CSS -->
+		<link rel="stylesheet" href="{% static 'KBMS/css/magnific-popup.css' %}">
+
+		<!-- owl carousel CSS -->
+		<link rel="stylesheet" href="{% static 'KBMS/css/owl.carousel.min.css' %}">
+		<link rel="stylesheet" href="{% static 'KBMS/css/owl.theme.default.min.css' %}">
+
+		<!-- Custom style CSS -->
+		<link rel="stylesheet" href="{% static 'KBMS/css/style.css' %}">
+
+		<!-- responsive CSS -->
+		<link rel="stylesheet" href="{% static 'KBMS/css/responsive.css' %}">
+
+		<!--[if lt IE 9]-->
+		<script src="{% static 'KBMS/js/html5shiv.min.js' %}"></script>
+		<!--[endif]-->
+
+	</head>
+	<body>
+
+		<!-- ====== Preloader ======  -->
+	    <div class="loading">
+			<div class="spinner">
+			  <div class="rect1"></div>
+			  <div class="rect2"></div>
+			  <div class="rect3"></div>
+			  <div class="rect4"></div>
+			  <div class="rect5"></div>
+			</div>
+		</div>
+		<!-- ======End Preloader ======  -->
+
+		<main>
+
+			<!-- ====== Navgition ======  -->
+			<!-- ====== Navgition ======  -->
+			<nav class="navbar">
+			  <div class="container">
+			    <!-- Brand and toggle get grouped for better mobile display -->
+			    <div class="navbar-header">
+			      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+			        <span class="sr-only">Toggle navigation</span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			      </button>
+			      <!-- logo -->
+			      <a class="navbar-brand" href="#">KBMS</a>
+			    </div>
+
+			    <!-- Collect the nav links, and other content for toggling -->
+			    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+				  <!-- links -->
+			      <ul class="nav navbar-nav navbar-right">
+			        <li><a href="#home" class="active">Home</a></li>
+			        <li><a href="#about">About</a></li>
+					<!--
+			        <li><a href="#services">Services</a></li>
+			        <li><a href="#portfolio">Work</a></li>
+			        <li><a href="#clients">Clients</a></li>
+			        <li><a href="#contact">Contact</a></li>
+			        -->
+			      </ul>
+			    </div><!-- /.navbar-collapse -->
+			  </div><!-- /.container -->
+			</nav>
+			<!-- ====== End Navgition ======  -->
+			<!-- ====== Header ======  -->
+			<header id="home" class="header" data-stellar-background-ratio="0.5">
+
+				<!-- particles -->
+				<div id="particles-js"></div>
+				<!-- header content -->
+				<div class="caption v-middle text-center">
+					<h3>I Am a,</h3>
+					<h2>Knowledge Assistant</h2>
+					<h4>I <span></span> </h4>
+				</div>
+
+				<div class="button-scroll" data-scrollTo="about"><span></span></div>
+			</header>
+			<!-- ====== End Header ======  -->
+
+			<!-- ====== hero ======  -->
+			<section id="about" class="hero section-padding">
+				<div class="container">
+
+					<div class="row">
+
+						<!-- hero block -->
+						<div class="hero-block">
+
+					 		<!-- hero image -->
+							<div class="col-md-4">
+								<div class="hero-img">
+									<img src="{% static 'KBMS/img/gpaint.jpg' %}" alt="image">
+								</div>
+							</div>
+
+							<div class="col-md-offset-1 col-md-6">
+								<div class="hero-item">
+									<h5 class="mb-20">What is a Knowledge Agent</h5>
+									<p class="mb-20">Stores the data semantically, by remembering the entities and their relationships.</p>
+									<p class="mb-30">Allows you to define rules, modify and query the information you need.</p>
+									{% csrf_token %}
+									<a href="{% url 'KBMS:node_add' %}">
+									<button><span><i class="fa fa-edit" aria-hidden="true"></i></span> Edit Graph </button>
+									</a>
+
+									<a href="{% url 'KBMS:ontology' %}">
+										<button><span><i class="fa fa-plus" aria-hidden="true"></i></span> Add Ontology </button>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</section>
+			<!-- ====== End hero ======  -->
+
+			<!--====== Numbers ======-->
+			<div class="numbers section-padding">
+				<div class="container">
+					<div class="row text-center">
+
+						<!-- number items -->
+						<div class="col-md-3 col-sm-6">
+							<div class="numb-item">
+								<span class=" icon-lifesaver"></span>
+								<h3 class="counter">55</h3>
+								<p>Entities</p>
+							</div>
+						</div>
+
+						<div class="col-md-3 col-sm-6">
+							<div class="numb-item">
+								<span class="icon-linegraph"></span>
+								<h3 class="counter">23</h3>
+								<p>Relationships</p>
+							</div>
+						</div>
+
+						<div class="col-md-3 col-sm-6">
+							<div class="numb-item">
+								<span class="icon-adjustments"></span>
+								<h3 class="counter">{{ rules_n }}</h3>
+								<p>Rules</p>
+							</div>
+						</div>
+
+						<div class="col-md-3 col-sm-6">
+							<div class="numb-item">
+								<span class="icon-newspaper"></span>
+								<h3 class="counter">{{ ontology_n }}</h3>
+								<p>Ontologies</p>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<!--====== End Numbers ======-->
+
+		</main>
+
+		<!--====== Footer ======-->
+		<footer>
+			<div class="container">
+				
+				<div class="social-icon">
+					<span><i class="fa fa-facebook" aria-hidden="true"></i></span>
+					<span><i class="fa fa-twitter" aria-hidden="true"></i></span>
+					<span><i class="fa fa-linkedin" aria-hidden="true"></i></span>
+					<span><i class="fa fa-github" aria-hidden="true"></i></span>
+				</div>
+
+				<p>Copy Right &copy; By Jay | All Right Reserved.</p>
+			</div>
+		</footer>
+		<!--====== End Footer ======-->
+		
+		
+		
+		<!--====== js ======-->
+
+		<!-- jQuery -->
+		<script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+		<script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js"></script>
+
+	  	<!-- bootstrap -->
+		<script src="{% static 'KBMS/js/bootstrap.min.js' %}"></script>
+
+		<!-- singlePageNav -->
+		<script src="{% static 'KBMS/js/jquery.singlePageNav.min.js' %}"></script>
+
+		<!-- magnific-popup -->
+		<script src="{% static 'KBMS/js/jquery.magnific-popup.min.js' %}"></script>
+
+		<!-- owl carousel -->
+		<script src="{% static 'KBMS/js/owl.carousel.min.js' %}"></script>
+
+		<!-- stellar js -->
+		<script src="{% static 'KBMS/js/jquery.stellar.min.js' %}"></script>
+
+      	<!-- jquery.waypoints.min js -->
+      	<script src="{% static 'KBMS/js/jquery.waypoints.min.js' %}"></script>
+
+      	<!-- jquery.counterup.min js -->
+      	<script src="{% static 'KBMS/js/jquery.counterup.min.js' %}"></script>
+
+      	<!-- typed js -->
+      	<script src="{% static 'KBMS/js/typed.js' %}"></script>
+
+      	<!-- particles.min js -->
+      	<script src="{% static 'KBMS/js/particles.min.js' %}"></script>
+
+      	<!-- app js -->
+      	<script src="{% static 'KBMS/js/app.js' %}"></script>
+
+      	<!-- isotope.pkgd.min js -->
+      	<script src="{% static 'KBMS/js/isotope.pkgd.min.js' %}"></script>
+
+      	<!-- validator js -->
+      	<script src="{% static 'KBMS/js/validator.js' %}"></script>
+
+      	<!-- custom js -->
+      	<script src="{% static 'KBMS/js/custom.js' %}"></script>
+
+	</body>
+</html>
