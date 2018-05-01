@@ -20,7 +20,7 @@
 		<meta name="keywords" content="portfolio, personal, corporate, business, parallax, creative, agency">
 
 		<!-- Title -->
-		<title>KBMS</title>
+		<title>Accenture Knowledge Platform</title>
 
 		<!-- Google fonts -->
 		<link href="https://fonts.googleapis.com/css?family=Raleway:100,400,600,700,900" rel="stylesheet">
@@ -81,7 +81,7 @@
 			        <span class="icon-bar"></span>
 			      </button>
 			      <!-- logo -->
-			      <a class="navbar-brand" href="#">KBMS</a>
+			      <a class="navbar-brand" href="#">Accenture Knowledge Platform</a>
 			    </div>
 
 			    <!-- Collect the nav links, and other content for toggling -->
@@ -91,10 +91,11 @@
 			      <ul class="nav navbar-nav navbar-right">
 			        <li><a href="#home" class="active">Home</a></li>
 			        <li><a href="#about">About</a></li>
-					<!--
-			        <li><a href="#services">Services</a></li>
-			        <li><a href="#portfolio">Work</a></li>
-			        <li><a href="#clients">Clients</a></li>
+			        <li><a href="#services">Curation Engine</a></li>
+
+			        <li><a href="#portfolio">Ontology</a></li>
+					  <li><a href="#clients">AKBC</a></li>
+					  <!--
 			        <li><a href="#contact">Contact</a></li>
 			        -->
 			      </ul>
@@ -145,7 +146,7 @@
 									</a>
 
 									<a href="{% url 'KBMS:ontology' %}">
-										<button><span><i class="fa fa-plus" aria-hidden="true"></i></span> Add Ontology </button>
+										<button><span><i class="fa fa-plus" aria-hidden="true"></i></span> Ontologies </button>
 									</a>
 								</div>
 							</div>
@@ -165,7 +166,7 @@
 						<div class="col-md-3 col-sm-6">
 							<div class="numb-item">
 								<span class=" icon-lifesaver"></span>
-								<h3 class="counter">55</h3>
+								<h3 class="counter">{{ nodes_n }}</h3>
 								<p>Entities</p>
 							</div>
 						</div>
@@ -173,7 +174,7 @@
 						<div class="col-md-3 col-sm-6">
 							<div class="numb-item">
 								<span class="icon-linegraph"></span>
-								<h3 class="counter">23</h3>
+								<h3 class="counter">{{ rels_n }}</h3>
 								<p>Relationships</p>
 							</div>
 						</div>
@@ -204,7 +205,7 @@
 		<!--====== Footer ======-->
 		<footer>
 			<div class="container">
-				
+
 				<div class="social-icon">
 					<span><i class="fa fa-facebook" aria-hidden="true"></i></span>
 					<span><i class="fa fa-twitter" aria-hidden="true"></i></span>
@@ -216,9 +217,9 @@
 			</div>
 		</footer>
 		<!--====== End Footer ======-->
-		
-		
-		
+
+
+
 		<!--====== js ======-->
 
 		<!-- jQuery -->

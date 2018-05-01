@@ -17,6 +17,7 @@ from django.shortcuts import render
 from neo4jrestclient.client import GraphDatabase
 from neo4jrestclient.query import Q
 from neo4jrestclient import client
+from neo4j.v1 import GraphDatabase
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
@@ -59,13 +60,23 @@ def create_ontology(request):
 # Create your views here.
 def index(request):
     template='KBMS/index.html'
-    node_count = Node.objects.count()
-    rel_count = Rel.objects.count()
+
+    #querying the graph to get the info
+    uri = "bolt://35.161.86.89:7687"
+    driver = GraphDatabase.driver(uri, auth=("admin", "AIRocks@17"))
+    with driver.session() as session:
+        node_object = session.run('MATCH (n) RETURN count(*)')
+        rel_object = session.run('MATCH ()-[r]->() RETURN count(*)')
+
+    node_count = node_object.values()[0][0]
+    rel_count = rel_object.values()[0][0]
+
+    print('Hereeeee',node_count,rel_count)
     context={
         'nodes_n': node_count,
         'rels_n': rel_count,
         'rules_n': '0',
-        'ontology_n': '1',
+        'ontology_n': '5',
     }
     return render(request,template,context)
 
@@ -192,8 +203,8 @@ def do_graph_query(request):
     """Make query to Neo4j, return names of associated nodes."""
 
 
-    url = "http://localhost:7474/db/data"
-    gdb = GraphDatabase(url, username="neo4j", password="mjgh2765")
+    url = "http://35.161.86.89:7474/db/data"
+    gdb = GraphDatabase(url, username="admin", password="AIRocks@17")
 
     q = "MATCH (n:Drink) RETURN n LIMIT 25"
     results = gdb.query(q=q, data_contents=True)

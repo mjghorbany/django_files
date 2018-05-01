@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 from django.db import models
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.contrib.auth.models import Permission, User
 
 # Create your models here.
@@ -29,7 +29,7 @@ class Rel(models.Model):
         return self.rel_title+ "." + self.rel_type
 
 class Ontology(models.Model):
-    user = models.ForeignKey(User, default=1)
+    user = models.ForeignKey(User, default=1,on_delete=models.CASCADE)
     domain = models.CharField(max_length=250)
     ontology_title = models.CharField(max_length=500)
     description = models.CharField(max_length=400)
