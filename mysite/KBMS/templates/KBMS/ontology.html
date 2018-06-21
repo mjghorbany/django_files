@@ -37,12 +37,27 @@
     </div>
 
 
+    <div id="container"></div>
+    <script src="sigma.min.js"></script>
+    <script src="sigma.parsers.json.min.js"></script>
+    <script>
+      sigma.parsers.json('data.json', {
+        container: 'container',
+        settings: {
+          defaultNodeColor: '#ec5148'
+        }
+      });
+    </script>
+
+
 
     {% load staticfiles %}
     <h2> Procurement Ontology  </h2>
-    <img src="{% static "KBMS/img/pro.png" %}" alt="My image"/>
+    <img src="{% static "KBMS/img/pro.png" %}" alt="My image" height="20" width="20" />
     <h2> ChatBot Ontology  </h2>
     <img src="{% static "KBMS/img/chatbot.png" %}" alt="My image"/>
+
+
 
 
 </div>

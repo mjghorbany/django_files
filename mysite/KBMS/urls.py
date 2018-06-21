@@ -6,9 +6,11 @@ app_name='KBMS'
 urlpatterns=[
     url(r'^$', views.index, name='index'),
     url(r'^ontology', views.ontology, name='ontology'),
+    url(r'^cy2neo', views.cy2neo, name='cy2neo'),
     url(r'^rule_engine', views.rule_engine, name='rule_engine'),
     url(r'^node/add', views.NodeCreate.as_view(), name='node_add'),
 
+    url(r'^upload_csv', views.upload_csv, name='upload_csv'),
     # /KBMS/node/<pk>/
     #url(r'^node/(?P<pk>[0-9]+)/$', views.DetailView.as_view(), name='detail'),
 

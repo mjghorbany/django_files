@@ -21,11 +21,17 @@ from neo4j.v1 import GraphDatabase
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
+
+from django.http import HttpResponse
+from django.http import JsonResponse
+
+from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from .forms import OntologyForm
 from .models import Ontology
+from .graph import extract_qa, extract_utterances
 
 AUDIO_FILE_TYPES = ['wav', 'mp3', 'ogg']
 IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg']
@@ -97,7 +103,9 @@ def ontology(request):
     #     else:
     return render(request, 'KBMS/ontology.html')
 
+def cy2neo(request):
 
+    return render(request, 'KBMS/cy2neo.html')
 
 
 def rule_engine(request):
@@ -213,3 +221,32 @@ def do_graph_query(request):
 
     return result
     # result.rows[0][0]['calories']
+
+
+def upload_csv(request):
+    data = {}
+    if "GET" == request.method:
+        return render(request, "KBMS/cy2neo.html", data)
+
+    try:
+        graph_name = request.POST["graph_name"]
+        csv_file = request.FILES["csv_file"]
+        if not csv_file.name.endswith('.xlsx'):
+            return HttpResponse('<h1>File is not excel type</h1>')
+        # if file is too large, return
+        if csv_file.multiple_chunks():
+            return HttpResponse('<h1>Uploaded file is too big (%.2f MB).</h1>')
+
+        a=extract_qa(csv_file)
+        b=extract_utterances(csv_file)
+        data['graph_res']=a
+        data['graph_name'] = graph_name
+
+    except Exception as e:
+        response_data = {}
+        response_data['message'] = "This is an exception"
+        response_data['res']=str(e)
+        return JsonResponse(response_data, status=201)
+
+    data['query']="MATCH(n: HR1)-[r]->(m:HR1) RETURN n, r, m LIMIT 50"
+    return render(request, 'KBMS/cy2neo.html', data)
