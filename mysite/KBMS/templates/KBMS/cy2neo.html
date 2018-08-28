@@ -1,0 +1,105 @@
+<html>
+{% load static %}
+<head>
+
+<link rel="stylesheet" href="{% static 'KBMS/css/codemirror.css' %}">
+<link rel="stylesheet" href="{% static 'KBMS/css/codemirror-neo.css' %}">
+<link rel="stylesheet" href="{% static 'KBMS/css/cy2neo.css' %}">
+<link rel="stylesheet" href="{% static 'KBMS/css/neod3.css' %}">
+<link rel="stylesheet" href="{% static 'KBMS/css/datatable.css' %}">
+<link rel="stylesheet" href="{% static 'KBMS/css/vendor.css' %}">
+<link rel="stylesheet" href="{% static 'KBMS/css/sweet-alert.css' %}">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
+<title>Graph!</title>
+</head>
+<body>
+  <div>
+  <input class="form-control" type="url" value="http://localhost:7474" id="neo4jUrl"/><br/>
+  <input class="form-control" type="text" size="8" value="jay" id="neo4jUser"/>
+  <input class="form-control" type="password" size="8" placeholder="password" value="mjgh2765" id="neo4jPass"/><br/>
+  <textarea name="cypher" id="cypher" rows="4" cols="120" data-lang="cypher" class="code form-control">
+  MATCH (n:{{graph_name}})-[r]->(m:{{graph_name}})
+  RETURN n,r,m
+  LIMIT 100;
+  </textarea>
+
+
+
+   <form action="upload_csv" method="POST" enctype="multipart/form-data" class="form-horizontal">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="name" class="col-md-3 col-sm-3 col-xs-12 control-label">File: </label>
+        <div class="col-md-8">
+            <input type="file" name="csv_file" id="csv_file" required="True" class="form-control">
+        </div>
+
+    </div>
+
+     <div class="form-group">
+        <label  class="col-md-3 col-sm-3 col-xs-12 control-label">Graph Name: </label>
+        <div class="col-md-4">
+             <input type="text" name="graph_name" class="form-control" placeholder="Graph Name" />
+        </div>
+
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-md-3 col-sm-3 col-xs-12 col-md-offset-3" style="margin-bottom:10px;">
+             <button class="btn btn-primary"> <span class="glyphicon glyphicon-upload" style="margin-right:5px;"></span>Upload </button>
+        </div>
+    </div>
+
+    </form>
+
+
+
+  <a href="#" title="Execute" id="execute"><i class="far fa-play-circle"></i></a>
+  </div>
+
+<div role="tabpanel">
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#graph" aria-controls="home" role="tab" data-toggle="tab">Graph</a></li>
+    <li role="presentation"><a href="#table" aria-controls="table" role="tab" data-toggle="tab">Table</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="graph">
+    	<div class="tab-pane active" id="graph1">&nbsp;</div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="table">
+    	<div id="datatable"></div>
+    </div>
+  </div>
+
+
+</div>
+
+
+<script src="{% static 'KBMS/js/codemirror.js' %}"></script>
+<script src="{% static 'KBMS/js/codemirror-cypher.js' %}"></script>
+<script src="{% static 'KBMS/js/vendor.js' %}"></script>
+<script src="{% static 'KBMS/js/sweet-alert.min.js' %}"></script>
+<script src="{% static 'KBMS/js/neod3.js' %}"></script>
+<script src="{% static 'KBMS/js/neod3-visualization.js' %}"></script>
+<script src="{% static 'KBMS/js/neo4d3.js' %}"></script>
+<script src="{% static 'KBMS/js/cy2neod3.js' %}"></script>
+<script src="{% static 'KBMS/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'KBMS/js/cypher.datatable.js' %}"></script>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+		//todo dynamic configuration
+		var config = {}
+	    var connection = function() { return {url:$("#neo4jUrl").val(), user:$("#neo4jUser").val(),pass:$("#neo4jPass").val()}; }
+		new Cy2NeoD3(config,"graph","datatable","cypher","execute", connection , true);
+	});
+</script>
+</body>
+</html>
