@@ -30,8 +30,9 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from .forms import OntologyForm
-from .models import Ontology
-from .graph import extract_qa, extract_utterances
+from .models import Ontology,Node
+from .graph import extract_qa, extract_utterances,extract_syns
+import pandas as pd
 
 AUDIO_FILE_TYPES = ['wav', 'mp3', 'ogg']
 IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg']
@@ -104,9 +105,11 @@ def ontology(request):
     return render(request, 'KBMS/ontology.html')
 
 def cy2neo(request):
-
     return render(request, 'KBMS/cy2neo.html')
 
+def curation(request):
+    nodes = Node.objects.all()
+    return render(request, 'KBMS/curation.html',{'nodes': nodes})
 
 def rule_engine(request):
     res=do_graph_query(request)
@@ -237,9 +240,20 @@ def upload_csv(request):
         if csv_file.multiple_chunks():
             return HttpResponse('<h1>Uploaded file is too big (%.2f MB).</h1>')
 
-        a=extract_qa(csv_file)
-        b=extract_utterances(csv_file)
+        xls = pd.ExcelFile(csv_file)
+        df1 = pd.read_excel(xls, 'QA_Pairs')
+        df2 = pd.read_excel(xls, 'Utterances')
+        df3 = pd.read_excel(xls, 'Synonyms')
+
+        #df= pd.read_excel(csv_file, ['QA_Pairs', 'Utterances'])
+
+        a=extract_qa(df1,graph_name)
+        b=extract_utterances(df2,graph_name)
+        c=extract_syns(df3, graph_name)
+
         data['graph_res']=a
+        data['utter_res'] = b
+        data['syn_res'] = c
         data['graph_name'] = graph_name
 
     except Exception as e:

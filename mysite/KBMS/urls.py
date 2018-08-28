@@ -6,6 +6,7 @@ app_name='KBMS'
 urlpatterns=[
     url(r'^$', views.index, name='index'),
     url(r'^ontology', views.ontology, name='ontology'),
+    url(r'^curation', views.curation, name='curation'),
     url(r'^cy2neo', views.cy2neo, name='cy2neo'),
     url(r'^rule_engine', views.rule_engine, name='rule_engine'),
     url(r'^node/add', views.NodeCreate.as_view(), name='node_add'),

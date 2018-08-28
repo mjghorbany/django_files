@@ -1,0 +1,93 @@
+{% extends 'KBMS/base.html' %}
+
+
+{% block body %}
+<div class="albums-container container-fluid">
+
+    <!-- Albums -->
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>{{ user.username }}'s Albums</h3>
+        </div>
+        {% if ontologies %}
+            {% for album in ontologies %}
+                <div class="col-sm-4 col-lg-2">
+                    <div class="thumbnail">
+                        <a href="{% url 'KBMS:detail' ontology.id %}">
+                            <img src="{{ ontology.ontology_logo.url }}" class="img-responsive">
+                        </a>
+                        <div class="caption">
+                            <h2>{{ ontology.ontology_title }}</h2>
+                            <h4>{{ ontology.domain }}</h4>
+                        </div>
+                    </div>
+                </div>
+                {% cycle '' '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
+            {% endfor %}
+        {% else %}
+            <div class="col-sm-12">
+                <br>
+                <a href="{% url 'KBMS:create_ontology' %}">
+                    <button type="button" class="btn btn-success">
+                        <span class="glyphicon glyphicon-plus"></span>&nbsp; Add an Ontology
+                    </button>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+
+    <div id="container"></div>
+    <script src="sigma.min.js"></script>
+    <script src="sigma.parsers.json.min.js"></script>
+    <script>
+      sigma.parsers.json('data.json', {
+        container: 'container',
+        settings: {
+          defaultNodeColor: '#ec5148'
+        }
+      });
+    </script>
+
+
+
+    {% load staticfiles %}
+    <h2> Hello!   </h2>
+    {% for node in nodes %}
+    <div>
+        <p>published: {{ node.att1 }}</p>
+        <h1><a href="">{{ node.name }}</a></h1>
+    </div>
+    {% endfor %}
+    <h2> Bye Bye   </h2>
+
+
+
+
+
+</div>
+{% endblock %}
+<!--
+<div class="container-fluid" style="margin-top:100px">
+	<div class="row">
+		<div class="col-sm-12 col-md-5">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<h3>Add an Ontology</h3>
+					<form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+						{% csrf_token %}
+						{% include 'KBMS/node_template.html' %}
+						<div class="form-group"></div>
+							<div class="col-sm-offset-2 col-sm-10">
+							<button type="submit" class="btn btn-success">Add</button>
+							</div>
+					</form>
+						
+				</div>
+			</div>
+		</div>
+		<h3>{{ res1 }}</h3>
+		<h3>{{ res2 }}</h3>
+	</div>
+</div>
+-->
